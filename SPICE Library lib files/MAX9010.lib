@@ -1,0 +1,94 @@
+* MAX9010 MACROMODEL
+* ------------------------------
+* Revision 0, 2/2004
+* ------------------------------
+* MAX9010 is a high-speed comparator operating from a single 4.5V to 5.5V supply
+* with a propagation delay of 5ns.
+* ------------------------------
+* Connections
+*   1  = OUT
+*   2  = GND
+*   3  = IN+
+*   4  = IN-
+*   5  = VCC
+*   6  = VCC
+*********************************
+.SUBCKT MAX9010 1 2 3 4 5 6
+X1 5 3 4 6 2 1 MAX9010CMP
+.ENDS
+*********************************
+
+****************
+.SUBCKT MAX9010CMP 1 2 3 4 6 7
+*INPUT STAGE
+EVCC 111 0 POLY(2) 1 0 4 0 0 0.5 0.5 0 0
+****************
+RQ 111 6 6.25K
+****************
+VOS 99 2 1M
+****************
+IEE 111 11 100U
+Q1 12 3 11 QX
+Q2 13 99 11 QY
+CIN 3 99 1.2P
+RC1 12 6 258.5
+RC2 13 6 258.5
+*INPUT COMMON-MODE RANGE
+DCMH 11 150 DX
+RCMH 150 151 1 
+VCMH 111 151 1.2
+DCML 152 11 DX
+RCML 152 153 1 
+VCML 153 6 0.5 
+****************
+*INTERMEDIATE STAGE
+GPS 14 6 111 6 2.4U
+GCM 14 6 11 6 537.206N
+GA 6 14 12 13 63.35M
+RA 14 6 100K
+CA 14 6 1E-18
+**************
+*LOGIC SCALING
+GLQ 6 36 14 6 5M
+RLQ 36 6 1K 
+DLHQ 36 32 DX
+VLHQ 32 6 2.9
+DLLQ 33 36 DX
+VLLQ 33 6 0.5
+**************
+*DELAY,RISE AND FALL TIME
+EDELQ 38 6 36 6 2
+RSDELQ 38 39 50
+T1Q 39 6 40 6 ZO=50 TD=3.923N
+RTERMQ 40 6 50 
+CTERMQ1 40 6 40P
+DCQ3 40 52 DX
+CTERMQ2 52 6 21.681P
+DCQ4 52 53 DX
+ECQ4 53 6 40 6 1
+**************
+*SHORT-CIRCUIT PROTECTION
+ESCQ1 400 6 40 6 1
+DSCQ1 400 44 DX
+DSCQ2 46 44 DX
+ISCQ 44 45 20M
+GSCQ 44 45 145 6 10M
+DSCQ3 45 400 DX
+DSCQ4 45 46 DX
+*****
+FSCQO 6 145 VSCQ 1
+DSCQS1 145 146 DX
+VSCSQ 146 6 1
+DSCQS2 6 145 DX 
+*****
+VSCQ 46 7 0
+****************
+*MODELS USED
+.MODEL QX PNP(BF=98.954)
+.MODEL QY PNP(BF=103.4)
+.MODEL DX D(N=0.001 TT=1E-15 CJO=3E-16)
+****************
+.ENDS  
+
+
+* Copyright (c) 2003-2012 Maxim Integrated Products.  All Rights Reserved.
